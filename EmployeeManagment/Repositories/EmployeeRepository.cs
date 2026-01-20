@@ -56,5 +56,34 @@ namespace EmployeeManagment.Repositories
             _context.Employees.Update(employee);
             _context.SaveChanges();
         }
+
+        public void GetEmployeeDept()
+        {
+            List<Emplist> emplists = (from  emp in _context.Employees
+                                        join dept in _context.Departments on emp.DepartmentId equals dept.Id
+                                        join jobTitle in _context.JobTitles on emp.JobTitleId equals jobTitle.Id
+                                      select new Emplist()
+                                      {
+                                          DepartmentName = dept.Name,
+                                          JobTitle = jobTitle.Title,
+                                          EmployeeId = emp.Id.ToString(),
+                                          EmployeeFirstName = emp.FirstName,
+                                          EmployeeLastName = emp.LastName,
+                                          Email = emp.Email,
+                                          DepartmentId = emp.DepartmentId.ToString(),
+                                          JobTitleId = emp.JobTitleId.ToString(),
+                                      }).ToList();
+        }
+    }
+    public class Emplist
+    {
+        public string DepartmentName { get; set; }
+        public string JobTitle { get; set; }
+        public string EmployeeId { get; set; }
+        public string EmployeeFirstName { get; set; }
+        public string EmployeeLastName { get; set; }
+        public string Email { get; set; }
+        public string DepartmentId { get; set; }
+        public string JobTitleId { get; set; }
     }
 }
